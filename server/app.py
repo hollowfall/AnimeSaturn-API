@@ -25,10 +25,11 @@ except ImportError:
 
 app = FastAPI(
     title="AnimeSaturn Live Machine API",
-    description="Real-time AnimeSaturn REST API service running on VPS machine with per-IP rate limiting.",
+    description="Real-time AnimeSaturn REST API service.",
     version=animesaturn.__version__,
-    docs_url="/docs",
-    redoc_url="/redoc"
+    docs_url=None,
+    redoc_url=None,
+    openapi_url=None
 )
 
 app.add_middleware(
@@ -41,7 +42,7 @@ app.add_middleware(
 
 rate_limit_rpm = int(os.getenv("RATE_LIMIT_PER_MINUTE", "60"))
 limiter = IPRateLimiter(limit=rate_limit_rpm, window_seconds=60)
-app.add_middleware(RateLimitMiddleware, limiter=limiter)
+app.add_middleware(RateLimitMiddleware, limiter=limiter, exempt_paths=["/api/health", "/api/domain"])
 
 class SecurityAndTimingMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
@@ -63,25 +64,24 @@ def root(request: Request):
     url = domain.get_public_url()
     client_ip = limiter.get_client_ip(request)
     return {
-        "service": "AnimeSaturn Live Machine API",
-        "version": animesaturn.__version__,
+        "service": "saturn_api",
         "status": "online",
+        "version": animesaturn.__version__,
         "client_ip": client_ip,
         "rate_limit_per_minute": rate_limit_rpm,
         "domain": url,
         "subdomain": sub,
         "persistent": True,
         "active_source_domain": animesaturn.get_domain(),
-        "docs": "/docs",
         "endpoints": [
+            "/api/health",
             "/api/domain",
             "/api/search?q={query}",
             "/api/anime/{slug}",
             "/api/episode/{slug}/{number}",
             "/api/stream/{slug}/{number}",
             "/api/latest?page={page}",
-            "/api/domains",
-            "/api/health"
+            "/api/domains"
         ]
     }
 
@@ -104,12 +104,11 @@ def get_machine_domain():
         "subdomain": sub,
         "public_url": url,
         "persistent": True,
-        "storage": "server/.domain",
-        "note": "This domain is permanently saved in server/.domain and will remain the same across all restarts."
+        "storage": "saturn_api/.domain"
     }
 
 @app.get("/api/search")
-def search_anime(q: str = Query(..., description="Anime title to search (e.g. Solo Leveling, Naruto)")):
+def search_anime(q: str = Query(..., description="Anime title to search")):
     if not q or not q.strip():
         raise HTTPException(status_code=400, detail="Missing required query parameter 'q'")
     try:
@@ -248,23 +247,13 @@ def get_domains():
         }
 
 if __name__ == "__main__":
-    port = int(os.getenv("PORT", "8000"))
+    port = int(os.getenv("PORT", "9483"))
     host = os.getenv("HOST", "0.0.0.0")
     subdomain = domain.get_or_create_subdomain()
     public_url = domain.get_public_url()
 
     provider = os.getenv("TUNNEL_PROVIDER", "serveo")
-    enable_tunnel = os.getenv("ENABLE_TUNNEL", "1").lower() in ("1", "true", "yes") or "--tunnel" in sys.argv
-
-    print("\n" + "=" * 62)
-    print("  AnimeSaturn Live Machine API (VPS Production)")
-    print("=" * 62)
-    print(f"  Local Address:        http://{host}:{port}")
-    print(f"  Rate Limit:           {rate_limit_rpm} req/min per IP")
-    print(f"  Persistent Domain:    {public_url}")
-    print(f"  Domain Config File:   server/.domain")
-    print(f"  * Note: This random domain NEVER changes on restart.")
-    print("=" * 62 + "\n")
+    enable_tunnel = os.getenv("ENABLE_TUNNEL", "0").lower() in ("1", "true", "yes") or "--tunnel" in sys.argv
 
     if enable_tunnel:
         domain.start_tunnel_process(port=port, provider=provider)
