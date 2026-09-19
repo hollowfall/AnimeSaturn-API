@@ -117,14 +117,15 @@
         <div class="console-server-bar">
           <span class="server-label">API Machine:</span>
           <select id="api-server-select" class="console-select">
-            <option value="https://animesaturn-api.onrender.com" selected>Render Service (https://animesaturn-api.onrender.com)</option>
+            <option value="custom" selected>VPS / Custom Machine</option>
+            <option value="https://api.lawliet.lol">VPS Domain (https://api.lawliet.lol)</option>
+            <option value="https://animesaturn-api.onrender.com">Render Service (https://animesaturn-api.onrender.com)</option>
             <option value="http://localhost:8000">Local Machine (http://localhost:8000)</option>
-            <option value="custom">Custom URL...</option>
           </select>
         </div>
         <div class="console-url-bar">
           <span class="method-badge">GET</span>
-          <input type="text" id="api-url-input" class="console-input" value="https://animesaturn-api.onrender.com/api/search?q=Solo+Leveling" spellcheck="false">
+          <input type="text" id="api-url-input" class="console-input" value="https://api.lawliet.lol/api/search?q=Solo+Leveling" spellcheck="false">
           <button id="btn-run-query" class="btn btn-primary">
             <span class="btn-run-text">Run Query</span>
             <div class="spinner" id="query-spinner"></div>
