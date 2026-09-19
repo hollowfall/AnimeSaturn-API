@@ -8,9 +8,10 @@ from typing import Optional
 from .search import find, latest_episodes
 from .anime import Anime
 from .domains import get_domain, set_domain, fetch_official_domains, discover_active_domain
+from .exceptions import HardStoppedDownload
 
 
-def main(args: Optional[list] = None) -> int:
+def _run_cli(args: Optional[list] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="animesaturn",
         description="AnimeSaturn CLI - Search, view, and download anime episodes."
@@ -161,8 +162,11 @@ def main(args: Optional[list] = None) -> int:
             else:
                 print("\nDownload failed.", file=sys.stderr)
                 return 1
+        except (KeyboardInterrupt, HardStoppedDownload):
+            print("\nDownload stopped.")
+            return 130
         except Exception as e:
-            print(f"Download error: {e}", file=sys.stderr)
+            print(f"\nDownload error: {e}", file=sys.stderr)
             return 1
 
     elif parsed.command == "latest":
@@ -193,6 +197,14 @@ def main(args: Optional[list] = None) -> int:
     else:
         parser.print_help()
         return 0
+
+
+def main(args: Optional[list] = None) -> int:
+    try:
+        return _run_cli(args)
+    except (KeyboardInterrupt, HardStoppedDownload):
+        print("\nDownload stopped.")
+        return 130
 
 
 if __name__ == "__main__":

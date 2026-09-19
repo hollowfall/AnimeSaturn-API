@@ -23,3 +23,12 @@ def test_episode_servers_and_decryption():
     info = primary.fileInfo()
     assert info["content_type"] == "video/mp4"
     assert info["total_bytes"] > 0
+
+
+def test_episode_download_cancellation(tmp_path):
+    ep = saturn.Episodio(number="1", anime_slug="dara-san-of-reiwa-764Qf")
+    servers = ep.getServer()
+    assert len(servers) > 0
+    with pytest.raises(saturn.HardStoppedDownload):
+        servers[0].download(folder=str(tmp_path), hook=lambda cur, tot, pct: False)
+

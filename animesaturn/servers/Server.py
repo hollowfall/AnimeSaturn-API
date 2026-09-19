@@ -229,9 +229,19 @@ class Server:
             os.replace(part_path, destination_path)
             return True
 
-        except HardStoppedDownload:
-            raise
+        except (KeyboardInterrupt, HardStoppedDownload):
+            if pbar:
+                try:
+                    pbar.close()
+                except Exception:
+                    pass
+            raise HardStoppedDownload("Download stopped.")
         except Exception as exc:
+            if pbar:
+                try:
+                    pbar.close()
+                except Exception:
+                    pass
             raise DownloadError(f"Failed to download episode from {self.name}: {exc}") from exc
 
     def _download_hls(
@@ -249,6 +259,8 @@ class Server:
         """
         Download an HLS (.m3u8) video stream by resolving quality and fetching .ts chunks.
         """
+        pbar = None
+        executor = None
         try:
             with httpx.Client(follow_redirects=True, timeout=httpx.Timeout(25.0, connect=10.0), headers=request_headers) as client:
                 r = client.get(playlist_url)
@@ -286,7 +298,6 @@ class Server:
                 segment_urls = [urllib.parse.urljoin(media_url, s) for s in segment_lines]
                 total_segments = len(segment_urls)
 
-            pbar = None
             if hook is None and tqdm is not None:
                 pbar = tqdm(
                     total=total_segments,
@@ -312,28 +323,27 @@ class Server:
                         time.sleep(0.5)
                 raise DownloadError(f"Failed to fetch segment {idx}: {last_err}")
 
+            executor = ThreadPoolExecutor(max_workers=max_workers)
             with open(part_path, "wb") as f:
-                with ThreadPoolExecutor(max_workers=max_workers) as executor:
-                    for b_start in range(0, total_segments, batch_size):
-                        batch_items = list(enumerate(segment_urls[b_start:b_start + batch_size], start=b_start))
-                        results = list(executor.map(fetch_segment, batch_items))
-                        results.sort(key=lambda x: x[0])
-                        for _, chunk_data in results:
-                            f.write(chunk_data)
-                            downloaded_bytes += len(chunk_data)
-                            if pbar:
-                                pbar.update(1)
+                for b_start in range(0, total_segments, batch_size):
+                    batch_items = list(enumerate(segment_urls[b_start:b_start + batch_size], start=b_start))
+                    results = list(executor.map(fetch_segment, batch_items))
+                    results.sort(key=lambda x: x[0])
+                    for _, chunk_data in results:
+                        f.write(chunk_data)
+                        downloaded_bytes += len(chunk_data)
+                        if pbar:
+                            pbar.update(1)
 
-                        if hook is not None:
-                            pct = ((b_start + len(batch_items)) / total_segments) * 100.0
-                            should_continue = hook(downloaded_bytes, total_estimated_bytes, pct)
-                            if should_continue is False:
-                                if pbar:
-                                    pbar.close()
-                                raise HardStoppedDownload("Download interrupted by user hook.")
+                    if hook is not None:
+                        pct = ((b_start + len(batch_items)) / total_segments) * 100.0
+                        should_continue = hook(downloaded_bytes, total_estimated_bytes, pct)
+                        if should_continue is False:
+                            raise HardStoppedDownload("Download stopped.")
 
             if pbar:
                 pbar.close()
+                pbar = None
 
             # Optional remux with ffmpeg if available on system
             ffmpeg_bin = shutil.which("ffmpeg")
@@ -356,10 +366,43 @@ class Server:
             os.replace(part_path, destination_path)
             return True
 
-        except HardStoppedDownload:
-            raise
+        except (KeyboardInterrupt, HardStoppedDownload):
+            if pbar:
+                try:
+                    pbar.close()
+                except Exception:
+                    pass
+                pbar = None
+            if executor:
+                try:
+                    executor.shutdown(wait=False, cancel_futures=True)
+                except Exception:
+                    pass
+            if os.path.exists(part_path):
+                try:
+                    os.remove(part_path)
+                except Exception:
+                    pass
+            raise HardStoppedDownload("Download stopped.")
         except Exception as exc:
+            if pbar:
+                try:
+                    pbar.close()
+                except Exception:
+                    pass
+                pbar = None
             raise DownloadError(f"HLS download error from {self.name}: {exc}") from exc
+        finally:
+            if pbar:
+                try:
+                    pbar.close()
+                except Exception:
+                    pass
+            if executor:
+                try:
+                    executor.shutdown(wait=False, cancel_futures=True)
+                except Exception:
+                    pass
 
     def __repr__(self) -> str:
         return f"<Server name='{self.name}' id={self.id} ep='{self.number}'>"

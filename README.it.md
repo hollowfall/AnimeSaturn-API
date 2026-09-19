@@ -4,10 +4,16 @@
 
 # AnimeSaturn-API (Italiano)
 
-[![PyPI](https://img.shields.io/pypi/v/animesaturn?color=blue)](https://pypi.org/project/animesaturn/)
-[![Python](https://img.shields.io/pypi/pyversions/animesaturn)](https://pypi.org/project/animesaturn/)
+[![PyPI - Version](https://img.shields.io/pypi/v/animesaturn?logo=pypi&logoColor=white&color=blue)](https://pypi.org/project/animesaturn/)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/animesaturn?logo=python&logoColor=white)](https://pypi.org/project/animesaturn/)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/animesaturn?color=orange&logo=pypi&logoColor=white)](https://pypi.org/project/animesaturn/)
+[![PyPI - Format](https://img.shields.io/pypi/format/animesaturn?logo=pypi&logoColor=white)](https://pypi.org/project/animesaturn/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/hollowfall/AnimeSaturn-API/blob/Main/LICENSE)
+[![Publish to PyPI](https://github.com/hollowfall/AnimeSaturn-API/actions/workflows/publish-pypi.yml/badge.svg)](https://pypi.org/project/animesaturn/)
 [![Deploy MkDocs](https://github.com/hollowfall/AnimeSaturn-API/actions/workflows/deploy-mkdocs.yml/badge.svg)](https://animesaturn.lawliet.lol/)
+
+[![Language - English](https://img.shields.io/badge/lang-english-%239FA8DA)](https://github.com/hollowfall/AnimeSaturn-API/blob/Main/README.md)
+[![Language - Italiano](https://img.shields.io/badge/lang-italiano-%239FA8DA)](https://github.com/hollowfall/AnimeSaturn-API/blob/Main/README.it.md)
 
 </div>
 
