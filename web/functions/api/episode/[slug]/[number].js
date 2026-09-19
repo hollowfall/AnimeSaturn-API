@@ -10,7 +10,7 @@ export async function onRequestGet(context) {
     );
   }
 
-  const cleanSlug = slug.replace(/^anime\
+  const cleanSlug = slug.replace(/^anime\//, "").replace(/\/$/, "");
   const cleanNum = number.replace(/^ep-?/i, "");
 
   const watchUrl = `${BASE_DOMAIN}/api/watch/${cleanSlug}/ep-${cleanNum}`;

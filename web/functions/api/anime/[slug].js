@@ -7,7 +7,7 @@ export async function onRequestGet(context) {
     return Response.json({ ok: false, error: "Missing anime slug" }, { status: 400 });
   }
 
-  const cleanSlug = slug.replace(/^anime\
+  const cleanSlug = slug.replace(/^anime\//, "").replace(/\/$/, "");
   const targetUrl = `${BASE_DOMAIN}/anime/${cleanSlug}`;
 
   try {
