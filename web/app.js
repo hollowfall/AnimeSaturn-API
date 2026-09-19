@@ -1,271 +1,80 @@
-const API_DATA = {
-  "search_solo_leveling": {
-    "ok": true,
-    "query": "Solo Leveling",
-    "count": 4,
-    "results": [
-      {
-        "name": "Solo Leveling 2: Arise from the Shadow",
-        "title": "Solo Leveling 2: Arise from the Shadow",
-        "link": "/anime/solo-leveling-2-arise-from-the-shadow-jyfLb",
-        "url": "https://www.animesaturn.net/anime/solo-leveling-2-arise-from-the-shadow-jyfLb",
-        "poster": "https://img.saturncdn.net/static/images/locandine/2J1Jh.jpg",
-        "year": "2025",
-        "episodes": "13",
-        "type": "TV",
-        "genres": ["Avventura", "Azione", "Fantasy"]
-      },
-      {
-        "name": "Solo Leveling",
-        "title": "Solo Leveling",
-        "link": "/anime/solo-leveling-6iHEN",
-        "url": "https://www.animesaturn.net/anime/solo-leveling-6iHEN",
-        "poster": "https://img.saturncdn.net/static/images/locandine/2J1Jh.jpg",
-        "year": "2024",
-        "episodes": "12",
-        "type": "TV",
-        "genres": ["Azione", "Fantasy"]
-      },
-      {
-        "name": "Solo Leveling (ITA)",
-        "title": "Solo Leveling (ITA)",
-        "link": "/anime/solo-leveling-ita-7Ksiu",
-        "url": "https://www.animesaturn.net/anime/solo-leveling-ita-7Ksiu",
-        "poster": "https://img.saturncdn.net/static/images/locandine/2J1Jh.jpg",
-        "year": "2024",
-        "episodes": "12",
-        "type": "TV",
-        "genres": ["Azione", "Fantasy"]
-      },
-      {
-        "name": "Solo Leveling 2: Arise from the Shadow (ITA)",
-        "title": "Solo Leveling 2: Arise from the Shadow (ITA)",
-        "link": "/anime/solo-leveling-2-arise-from-the-shadow-ita-mW4YY",
-        "url": "https://www.animesaturn.net/anime/solo-leveling-2-arise-from-the-shadow-ita-mW4YY",
-        "poster": "https://img.saturncdn.net/static/images/locandine/2J1Jh.jpg",
-        "year": "2025",
-        "episodes": "13",
-        "type": "TV",
-        "genres": ["Avventura", "Azione", "Fantasy"]
-      }
-    ]
-  },
-  "search_naruto": {
-    "ok": true,
-    "query": "Naruto",
-    "count": 2,
-    "results": [
-      {
-        "name": "Naruto Shippuden (ITA)",
-        "title": "Naruto Shippuden (ITA)",
-        "link": "/anime/naruto-shippuden-ita-PjvU1",
-        "url": "https://www.animesaturn.net/anime/naruto-shippuden-ita-PjvU1",
-        "poster": "https://img.saturncdn.net/static/images/locandine/01ec367b44f0a568430a957e042639af.png",
-        "year": "2007",
-        "episodes": "500",
-        "type": "TV",
-        "genres": ["Arti Marziali", "Avventura", "Azione"]
-      },
-      {
-        "name": "Naruto",
-        "title": "Naruto",
-        "link": "/anime/naruto-kYJdf",
-        "url": "https://www.animesaturn.net/anime/naruto-kYJdf",
-        "poster": "https://img.saturncdn.net/static/images/locandine/01ec367b44f0a568430a957e042639af.png",
-        "year": "2002",
-        "episodes": "220",
-        "type": "TV",
-        "genres": ["Arti Marziali", "Avventura", "Azione"]
-      }
-    ]
-  },
-  "search_bleach": {
-    "ok": true,
-    "query": "Bleach",
-    "count": 2,
-    "results": [
-      {
-        "name": "Bleach",
-        "title": "Bleach",
-        "link": "/anime/bleach-c13Hk",
-        "url": "https://www.animesaturn.net/anime/bleach-c13Hk",
-        "poster": "https://img.saturncdn.net/static/images/locandine/40451l.jpg",
-        "year": "2004",
-        "episodes": "366",
-        "type": "TV",
-        "genres": ["Avventura", "Azione", "Commedia"]
-      },
-      {
-        "name": "Bleach: Thousand-Year Blood War",
-        "title": "Bleach: Thousand-Year Blood War",
-        "link": "/anime/bleach-thousand-year-blood-war-N6dJq",
-        "url": "https://www.animesaturn.net/anime/bleach-thousand-year-blood-war-N6dJq",
-        "poster": "https://img.saturncdn.net/static/images/locandine/40451l.jpg",
-        "year": "2022",
-        "episodes": "13",
-        "type": "TV",
-        "genres": ["Azione", "Avventura", "Supernaturale"]
-      }
-    ]
-  },
-  "search_one_piece": {
-    "ok": true,
-    "query": "One Piece",
-    "count": 1,
-    "results": [
-      {
-        "name": "One Piece",
-        "title": "One Piece",
-        "link": "/anime/one-piece-PmTvj",
-        "url": "https://www.animesaturn.net/anime/one-piece-PmTvj",
-        "poster": "https://img.saturncdn.net/static/images/locandine/OnePieceElbafPic.png",
-        "year": "1999",
-        "episodes": "1000+",
-        "type": "TV",
-        "genres": ["Avventura", "Azione", "Commedia"]
-      }
-    ]
-  },
-  "latest": {
-    "ok": true,
-    "page": 1,
-    "count": 6,
-    "releases": [
-      { "title": "One Piece", "episode": "Ep. 1122", "url": "https://www.animesaturn.net/episode/one-piece-ep-1122" },
-      { "title": "Bleach: Thousand-Year Blood War Part 3", "episode": "Ep. 11", "url": "https://www.animesaturn.net/episode/bleach-ep-11" },
-      { "title": "Solo Leveling Season 2", "episode": "Ep. 8", "url": "https://www.animesaturn.net/episode/solo-leveling-s2-ep-8" },
-      { "title": "Dragon Ball Daima", "episode": "Ep. 14", "url": "https://www.animesaturn.net/episode/dragon-ball-daima-ep-14" },
-      { "title": "Blue Lock Season 2", "episode": "Ep. 12", "url": "https://www.animesaturn.net/episode/blue-lock-s2-ep-12" },
-      { "title": "Re:Zero Season 3", "episode": "Ep. 8", "url": "https://www.animesaturn.net/episode/rezero-s3-ep-8" }
-    ]
-  },
-  "domains": {
-    "ok": true,
-    "active_domain": "https://www.animesaturn.net",
-    "mirrors": [
-      "https://www.animesaturn.net",
-      "https://www.animesaturn.cx",
-      "https://www.animesaturn.tv",
-      "https://www.animesaturn.in"
-    ]
-  }
-};
-
-const ANIME_DETAILS = {
-  "solo-leveling-2-arise-from-the-shadow-jyfLb": {
-    "title": "Solo Leveling 2: Arise from the Shadow",
-    "jtitle": "Ore dake Level Up na Ken Season 2",
-    "poster": "https://img.saturncdn.net/static/images/locandine/2J1Jh.jpg",
-    "story": "Dopo essere sopravvissuto a un doppio dungeon mortale, il cacciatore di rango E Sung Jin-woo ottiene la rara capacità di salire di livello senza limiti attraverso un misterioso 'Sistema' visibile solo a lui. Mentre il suo potere cresce, Jin-woo scopre i segreti che minacciano sia il mondo umano che i Monarchi.",
-    "category": "TV",
-    "status": "In corso",
-    "studio": "A-1 Pictures",
-    "episodes_count": 13,
-    "url": "https://www.animesaturn.net/anime/solo-leveling-2-arise-from-the-shadow-jyfLb"
-  },
-  "naruto-shippuden-ita-PjvU1": {
-    "title": "Naruto Shippuden (ITA)",
-    "jtitle": "NARUTO -ナルト- 疾風伝",
-    "poster": "https://img.saturncdn.net/static/images/locandine/01ec367b44f0a568430a957e042639af.png",
-    "story": "Sono passati due anni e mezzo dalla partenza di Naruto Uzumaki per il suo duro allenamento con il leggendario Jiraiya. Ritornato al Villaggio della Foglia, Naruto ritrova i suoi vecchi compagni e si prepara ad affrontare l'Organizzazione Alba (Akatsuki) per salvare l'amico Sasuke Uchiha.",
-    "category": "TV",
-    "status": "Finito",
-    "studio": "Pierrot",
-    "episodes_count": 500,
-    "url": "https://www.animesaturn.net/anime/naruto-shippuden-ita-PjvU1"
-  },
-  "bleach-c13Hk": {
-    "title": "Bleach",
-    "jtitle": "BLEACH - ブリーチ",
-    "poster": "https://img.saturncdn.net/static/images/locandine/40451l.jpg",
-    "story": "Ichigo Kurosaki è un quindicenne in grado di vedere gli spiriti. La sua vita cambia drasticamente quando incontra Rukia Kuchiki, uno Shinigami, e ottiene i suoi poteri per proteggere la sua famiglia da un mostruoso Hollow.",
-    "category": "TV",
-    "status": "Finito",
-    "studio": "Pierrot",
-    "episodes_count": 366,
-    "url": "https://www.animesaturn.net/anime/bleach-c13Hk"
-  },
-  "one-piece-PmTvj": {
-    "title": "One Piece",
-    "jtitle": "ONE PIECE - ワンピース",
-    "poster": "https://img.saturncdn.net/static/images/locandine/OnePieceElbafPic.png",
-    "story": "Monkey D. Rufy è un giovane pirata sognatore che da piccolo ha inavvertitamente mangiato il Frutto del Diavolo Gom Gom. Deciso a diventare il Re dei Pirati, salpa per la Rotta Maggiore alla ricerca del leggendario tesoro One Piece.",
-    "category": "TV",
-    "status": "In corso",
-    "studio": "Toei Animation",
-    "episodes_count": 1000,
-    "url": "https://www.animesaturn.net/anime/one-piece-PmTvj"
-  },
-  "jujutsu-kaisen-XMtDv": {
-    "title": "Jujutsu Kaisen",
-    "jtitle": "呪術廻戦",
-    "poster": "https://img.saturncdn.net/static/images/locandine/db1bbeb5de1267aac5b5a0291ecb1b3a1610752065_full.jpg",
-    "story": "Yuji Itadori è uno studente dal fisico straordinario. Per salvare i suoi amici dall'attacco di una Maledizione, ingoia un dito mummificato appartenente a Ryomen Sukuna, il Re delle Maledizioni.",
-    "category": "TV",
-    "status": "Finito",
-    "studio": "MAPPA",
-    "episodes_count": 24,
-    "url": "https://www.animesaturn.net/anime/jujutsu-kaisen-XMtDv"
-  },
-  "demon-slayer-kimetsu-no-yaiba-entertainment-district-arc-KGZWL": {
-    "title": "Demon Slayer: Kimetsu no Yaiba",
-    "jtitle": "鬼滅の刃",
-    "poster": "https://img.saturncdn.net/static/images/locandine/YIoa-.png",
-    "story": "Tanjiro Kamado vive pacificamente sulle montagne vendendo carbone, finché la sua famiglia non viene massacrata da un demone e l'unica sorella sopravvissuta, Nezuko, viene trasformata a sua volta in demone.",
-    "category": "TV",
-    "status": "Finito",
-    "studio": "ufotable",
-    "episodes_count": 11,
-    "url": "https://www.animesaturn.net/anime/demon-slayer-kimetsu-no-yaiba-entertainment-district-arc-KGZWL"
-  }
-};
-
 document.addEventListener("DOMContentLoaded", () => {
-  initClipboard();
-  initConsoleTabs();
-  initPlayground();
+  initCopyButtons();
+  initConsole();
   initExplorerFilter();
   initModal();
 });
 
-function initClipboard() {
-  const copyInstallBtn = document.getElementById("btn-copy-install");
-  const copyTooltip = document.getElementById("copy-tooltip");
-  const installCmd = document.getElementById("install-command");
-
-  if (copyInstallBtn && installCmd) {
-    copyInstallBtn.addEventListener("click", () => {
-      navigator.clipboard.writeText(installCmd.innerText.trim()).then(() => {
-        copyTooltip.classList.add("show");
-        setTimeout(() => copyTooltip.classList.remove("show"), 2000);
-      });
+function initCopyButtons() {
+  const installCopyBtn = document.getElementById("btn-copy-install");
+  if (installCopyBtn) {
+    installCopyBtn.addEventListener("click", () => {
+      const code = document.getElementById("install-cmd")?.textContent?.trim() || "pip install animesaturn";
+      copyToClipboard(code, installCopyBtn);
     });
   }
 
   const copyOutputBtn = document.getElementById("btn-copy-output");
   if (copyOutputBtn) {
     copyOutputBtn.addEventListener("click", () => {
-      const activeTab = document.querySelector(".code-view.active");
-      if (activeTab) {
-        navigator.clipboard.writeText(activeTab.innerText).then(() => {
-          const originalText = copyOutputBtn.querySelector("span").textContent;
-          copyOutputBtn.querySelector("span").textContent = "Copied!";
-          setTimeout(() => {
-            copyOutputBtn.querySelector("span").textContent = originalText;
-          }, 1500);
-        });
+      const isJsonActive = document.getElementById("json-view")?.classList.contains("active");
+      const targetElem = isJsonActive ? document.getElementById("json-code-content") : document.getElementById("python-code-content");
+      if (targetElem) {
+        copyToClipboard(targetElem.textContent || "", copyOutputBtn);
       }
     });
   }
 }
 
-function initConsoleTabs() {
+function copyToClipboard(text, btnElement) {
+  navigator.clipboard.writeText(text).then(() => {
+    const tooltip = btnElement.querySelector(".copy-tooltip");
+    if (tooltip) {
+      tooltip.classList.add("show");
+      setTimeout(() => tooltip.classList.remove("show"), 1500);
+    } else {
+      const span = btnElement.querySelector("span");
+      if (span) {
+        const prev = span.textContent;
+        span.textContent = "Copied!";
+        setTimeout(() => span.textContent = prev, 1500);
+      }
+    }
+  }).catch(() => {});
+}
+
+function getSelectedBaseServer() {
+  const select = document.getElementById("api-server-select");
+  if (!select) return "https://animesaturn-api.onrender.com";
+  if (select.value === "custom") {
+    const currentVal = document.getElementById("api-url-input")?.value || "";
+    try {
+      const parsed = new URL(currentVal);
+      return parsed.origin;
+    } catch {
+      return "https://animesaturn-api.onrender.com";
+    }
+  }
+  return select.value;
+}
+
+function initConsole() {
+  const urlInput = document.getElementById("api-url-input");
+  const runBtn = document.getElementById("btn-run-query");
+  const spinner = document.getElementById("query-spinner");
+  const btnText = runBtn?.querySelector(".btn-run-text");
+  const statusBadge = document.getElementById("status-badge");
+  const responseTimeBadge = document.getElementById("response-time-badge");
+  const jsonCodeContent = document.getElementById("json-code-content");
+  const pythonCodeContent = document.getElementById("python-code-content");
+  const serverSelect = document.getElementById("api-server-select");
+
   const tabBtnJson = document.getElementById("tab-btn-json");
   const tabBtnCode = document.getElementById("tab-btn-code");
   const jsonView = document.getElementById("json-view");
   const codeView = document.getElementById("code-view");
 
-  if (tabBtnJson && tabBtnCode) {
+  if (tabBtnJson && tabBtnCode && jsonView && codeView) {
     tabBtnJson.addEventListener("click", () => {
       tabBtnJson.classList.add("active");
       tabBtnCode.classList.remove("active");
@@ -280,33 +89,39 @@ function initConsoleTabs() {
       jsonView.classList.remove("active");
     });
   }
-}
 
-function initPlayground() {
-  const urlInput = document.getElementById("api-url-input");
-  const runBtn = document.getElementById("btn-run-query");
-  const spinner = document.getElementById("query-spinner");
-  const btnText = runBtn ? runBtn.querySelector(".btn-run-text") : null;
-  const jsonCodeContent = document.getElementById("json-code-content");
-  const pythonCodeContent = document.getElementById("python-code-content");
-  const statusBadge = document.getElementById("status-badge");
-  const responseTimeBadge = document.getElementById("response-time-badge");
-  const presets = document.querySelectorAll(".preset-btn");
+  if (serverSelect && urlInput) {
+    serverSelect.addEventListener("change", () => {
+      if (serverSelect.value === "custom") {
+        urlInput.focus();
+        return;
+      }
+      try {
+        const currentUrl = new URL(urlInput.value, window.location.origin);
+        urlInput.value = `${serverSelect.value}${currentUrl.pathname}${currentUrl.search}`;
+      } catch {
+        urlInput.value = `${serverSelect.value}/api/search?q=Solo+Leveling`;
+      }
+      runQuery();
+    });
+  }
 
-  presets.forEach(btn => {
+  const presetBtns = document.querySelectorAll(".preset-btn");
+  presetBtns.forEach(btn => {
     btn.addEventListener("click", () => {
-      presets.forEach(b => b.classList.remove("active"));
+      presetBtns.forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
 
+      const base = getSelectedBaseServer();
       const type = btn.dataset.type;
       const query = btn.dataset.query;
 
       if (type === "search") {
-        urlInput.value = `/api/search?q=${encodeURIComponent(query)}`;
+        urlInput.value = `${base}/api/search?q=${encodeURIComponent(query)}`;
       } else if (type === "latest") {
-        urlInput.value = `/api/latest`;
+        urlInput.value = `${base}/api/latest`;
       } else if (type === "mirrors") {
-        urlInput.value = `/api/domains`;
+        urlInput.value = `${base}/api/domains`;
       }
       runQuery();
     });
@@ -318,48 +133,53 @@ function initPlayground() {
     if (!rawUrl) return;
 
     if (spinner) spinner.classList.add("show");
-    if (btnText) btnText.textContent = "Loading...";
+    if (btnText) btnText.textContent = "Executing...";
     if (runBtn) runBtn.disabled = true;
 
     const startTime = performance.now();
-
     let resolvedData = null;
-    let isLive = false;
+    let statusCode = 200;
+    let statusText = "OK";
+    let isError = false;
 
     try {
+      const res = await fetch(rawUrl, {
+        headers: { "Accept": "application/json" }
+      });
+      statusCode = res.status;
+      statusText = res.statusText || (res.ok ? "OK" : "Error");
       
-      const res = await fetch(rawUrl, { headers: { "Accept": "application/json" } });
       const contentType = res.headers.get("content-type") || "";
-      if (res.ok && contentType.includes("json")) {
+      if (contentType.includes("json")) {
         resolvedData = await res.json();
-        isLive = true;
-      }
-    } catch (e) {
-      
-    }
-
-    if (!resolvedData) {
-      if (rawUrl.includes("Naruto")) {
-        resolvedData = API_DATA.search_naruto;
-      } else if (rawUrl.includes("Bleach")) {
-        resolvedData = API_DATA.search_bleach;
-      } else if (rawUrl.includes("One+Piece") || rawUrl.includes("One Piece")) {
-        resolvedData = API_DATA.search_one_piece;
-      } else if (rawUrl.includes("latest")) {
-        resolvedData = API_DATA.latest;
-      } else if (rawUrl.includes("domains")) {
-        resolvedData = API_DATA.domains;
       } else {
-        resolvedData = API_DATA.search_solo_leveling;
+        const text = await res.text();
+        resolvedData = {
+          status: res.status,
+          response: text.slice(0, 500)
+        };
       }
+      if (!res.ok) {
+        isError = true;
+      }
+    } catch (err) {
+      isError = true;
+      statusCode = 503;
+      statusText = "Machine Unavailable";
+      resolvedData = {
+        error: true,
+        endpoint: rawUrl,
+        message: err.message || "Failed to establish connection to the machine API.",
+        notice: "If your Render service is on the free tier, it spins down after inactivity. Sending this request initiates wakeup; retry in 30-45 seconds."
+      };
     }
 
-    const elapsed = Math.max(12, Math.round(performance.now() - startTime));
+    const elapsed = Math.max(10, Math.round(performance.now() - startTime));
     if (responseTimeBadge) responseTimeBadge.textContent = `${elapsed}ms`;
 
     if (statusBadge) {
-      statusBadge.textContent = "200 OK";
-      statusBadge.className = "status-indicator status-ok";
+      statusBadge.textContent = `${statusCode} ${statusText}`;
+      statusBadge.className = `status-indicator ${isError ? "status-err" : "status-ok"}`;
     }
 
     if (jsonCodeContent) {
@@ -367,7 +187,7 @@ function initPlayground() {
     }
 
     if (pythonCodeContent) {
-      pythonCodeContent.textContent = generatePythonSnippet(rawUrl, resolvedData);
+      pythonCodeContent.textContent = generatePythonSnippet(rawUrl);
     }
 
     if (spinner) spinner.classList.remove("show");
@@ -409,17 +229,27 @@ function syntaxHighlightJson(jsonObj) {
     });
 }
 
-function generatePythonSnippet(url, data) {
+function generatePythonSnippet(url) {
   if (url.includes("/api/search")) {
     const qMatch = url.match(/[?&]q=([^&]+)/);
     const query = qMatch ? decodeURIComponent(qMatch[1]) : "Solo Leveling";
-    return `import animesaturn\n\n# Search anime on AnimeSaturn\nresults = animesaturn.find("${query}")\nfor anime in results:\n    print(anime["name"], anime["episodes"], anime["url"])`;
+    return `import animesaturn\n\nresults = animesaturn.find("${query}")\nfor anime in results:\n    print(anime["name"], anime["episodes"], anime["url"])`;
   }
   if (url.includes("/api/latest")) {
-    return `import animesaturn\n\n# Fetch latest episodes released\nlatest = animesaturn.latest_episodes(page=1)\nfor ep in latest.get("items", []):\n    print(ep["title"], ep["episodeLabel"])`;
+    return `import animesaturn\n\nlatest = animesaturn.latest_episodes(page=1)\nfor ep in latest.get("items", []):\n    print(ep["title"], ep["episodeLabel"])`;
   }
   if (url.includes("/api/domains")) {
-    return `import animesaturn\n\n# Check official working mirrors\nmirrors = animesaturn.fetch_official_domains()\nactive = animesaturn.discover_active_domain()\nprint("Active domain:", active)`;
+    return `import animesaturn\n\nmirrors = animesaturn.fetch_official_domains()\nactive = animesaturn.discover_active_domain()\nprint("Active mirror:", active)`;
+  }
+  if (url.includes("/api/anime/")) {
+    const slug = url.split("/api/anime/")[1]?.split("?")[0] || "solo-leveling-6iHEN";
+    return `import animesaturn\n\nanime = animesaturn.Anime("${slug}")\nprint(anime.title, f"{len(anime)} episodes")\nfor ep in anime:\n    print(ep.number, ep.url)`;
+  }
+  if (url.includes("/api/stream/")) {
+    const parts = url.split("/api/stream/")[1]?.split("/") || ["solo-leveling-6iHEN", "1"];
+    const slug = parts[0];
+    const epNum = parts[1] || "1";
+    return `import animesaturn\n\nanime = animesaturn.Anime("${slug}")\nep = anime[${epNum}]\nfor server in ep.getServer():\n    stream_url = server.fileLink()\n    print(f"[{server.name}] -> {stream_url}")`;
   }
   return `import animesaturn\n\nresults = animesaturn.find("Solo Leveling")\nprint(results)`;
 }
@@ -444,7 +274,7 @@ function initExplorerFilter() {
 
   cards.forEach(card => {
     card.addEventListener("click", () => {
-      openAnimeModal(card.dataset.slug, card.dataset.title);
+      openAnimeModal(card.dataset.slug, card.dataset.title, card.querySelector(".card-poster")?.src);
     });
   });
 }
@@ -475,28 +305,58 @@ function closeModal() {
   if (backdrop) backdrop.classList.remove("open");
 }
 
-function openAnimeModal(slug, fallbackTitle) {
+async function openAnimeModal(slug, fallbackTitle, posterSrc) {
   const backdrop = document.getElementById("modal-backdrop");
   const container = document.getElementById("modal-content-container");
   if (!backdrop || !container) return;
 
-  const data = ANIME_DETAILS[slug] || {
-    title: fallbackTitle,
-    poster: "static/img/logo.png",
-    story: "AnimeSaturn title metadata.",
-    episodes_count: 12,
-    url: "https://www.animesaturn.net"
-  };
+  const base = getSelectedBaseServer();
+  backdrop.classList.add("open");
 
-  const epsCount = data.episodes_count || 12;
+  container.innerHTML = `
+    <div>
+      <img class="modal-poster" src="${posterSrc || "static/img/logo.png"}" alt="${escapeHtml(fallbackTitle)}">
+    </div>
+    <div>
+      <h2 class="modal-title">${escapeHtml(fallbackTitle)}</h2>
+      <div class="modal-pills">
+        <span class="modal-pill">Loading Live Data from ${escapeHtml(base)}...</span>
+      </div>
+      <div id="modal-body-area">
+        <div class="spinner show" style="margin: 20px 0;"></div>
+      </div>
+    </div>
+  `;
+
+  try {
+    const res = await fetch(`${base}/api/anime/${encodeURIComponent(slug)}`, {
+      headers: { "Accept": "application/json" }
+    });
+    
+    if (res.ok) {
+      const data = await res.json();
+      renderModalContent(container, data, slug, base);
+      return;
+    }
+  } catch {}
+
+  renderModalFallback(container, slug, fallbackTitle, posterSrc, base);
+}
+
+function renderModalContent(container, data, slug, base) {
+  const episodes = data.episodes || [];
+  const epsCount = episodes.length || data.episodes_count || 12;
   const epButtons = [];
-  for (let i = 1; i <= Math.min(epsCount, 24); i++) {
-    epButtons.push(`<button class="ep-btn" data-ep="${i}">Ep. ${i}</button>`);
+
+  for (let i = 0; i < Math.min(episodes.length, 36); i++) {
+    const ep = episodes[i];
+    const num = ep.number || (i + 1);
+    epButtons.push(`<button class="ep-btn" data-ep="${num}">Ep. ${num}</button>`);
   }
 
   container.innerHTML = `
     <div>
-      <img class="modal-poster" src="${data.poster}" alt="${escapeHtml(data.title)}">
+      <img class="modal-poster" src="${data.poster || "static/img/logo.png"}" alt="${escapeHtml(data.title)}">
     </div>
     <div>
       <h2 class="modal-title">${escapeHtml(data.title)}</h2>
@@ -504,53 +364,143 @@ function openAnimeModal(slug, fallbackTitle) {
       
       <div class="modal-pills">
         <span class="modal-pill">${epsCount} Episodes</span>
-        ${data.category ? `<span class="modal-pill">${data.category}</span>` : ""}
-        ${data.status ? `<span class="modal-pill">${data.status}</span>` : ""}
-        ${data.studio ? `<span class="modal-pill">${data.studio}</span>` : ""}
+        ${data.category ? `<span class="modal-pill">${escapeHtml(data.category)}</span>` : ""}
+        ${data.status ? `<span class="modal-pill">${escapeHtml(data.status)}</span>` : ""}
+        ${data.studio ? `<span class="modal-pill">${escapeHtml(data.studio)}</span>` : ""}
+        ${data.year ? `<span class="modal-pill">${escapeHtml(data.year)}</span>` : ""}
       </div>
 
-      <p class="modal-synopsis">${escapeHtml(data.story)}</p>
+      <p class="modal-synopsis">${escapeHtml(data.story || "No synopsis available.")}</p>
 
       <div class="modal-section-title">
-        <span>Episodes (${epsCount} total):</span>
+        <span>Select Episode to Inspect Stream:</span>
       </div>
 
       <div class="episode-picker-grid">
-        ${epButtons.join("")}
+        ${epButtons.length > 0 ? epButtons.join("") : "<span style='color:#9ba3af;'>No episode list returned.</span>"}
       </div>
 
-      <div id="modal-stream-info" style="margin-top: 14px; padding: 10px 14px; background: #16181d; border: 1px solid #303642; border-radius: 4px;">
-        <div style="font-size: 0.82rem; color: #9ba3af;">
-          Stream Server: <strong style="color: #fff;">SaturnStream (Server principale)</strong>
+      <div id="modal-stream-info" style="margin-top: 14px; padding: 12px 14px; background: #16181d; border: 1px solid #303642; border-radius: 4px;">
+        <div style="font-size: 0.84rem; color: #9ba3af;">
+          Click an episode above to decrypt direct stream URLs via <code>${escapeHtml(base)}</code>.
         </div>
-        <div style="margin-top: 8px; display: flex; gap: 8px;">
-          <a href="${data.url}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="padding: 5px 12px; font-size: 0.8rem;">
-            Watch Episode on AnimeSaturn
+        <div style="margin-top: 10px; display: flex; gap: 8px;">
+          <a href="${data.url || `https://www.animesaturn.net/anime/${slug}`}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="padding: 5px 12px; font-size: 0.8rem;">
+            Open on AnimeSaturn
           </a>
         </div>
       </div>
     </div>
   `;
 
-  backdrop.classList.add("open");
+  attachEpisodeClickHandlers(container, slug, base);
+}
 
+function renderModalFallback(container, slug, fallbackTitle, posterSrc, base) {
+  const epButtons = [];
+  for (let i = 1; i <= 24; i++) {
+    epButtons.push(`<button class="ep-btn" data-ep="${i}">Ep. ${i}</button>`);
+  }
+
+  container.innerHTML = `
+    <div>
+      <img class="modal-poster" src="${posterSrc || "static/img/logo.png"}" alt="${escapeHtml(fallbackTitle)}">
+    </div>
+    <div>
+      <h2 class="modal-title">${escapeHtml(fallbackTitle)}</h2>
+      
+      <div class="modal-pills">
+        <span class="modal-pill">Offline Preview</span>
+        <span class="modal-pill">TV Series</span>
+      </div>
+
+      <p class="modal-synopsis">Select an episode below to request live stream decryption from the Render machine API.</p>
+
+      <div class="modal-section-title">
+        <span>Select Episode:</span>
+      </div>
+
+      <div class="episode-picker-grid">
+        ${epButtons.join("")}
+      </div>
+
+      <div id="modal-stream-info" style="margin-top: 14px; padding: 12px 14px; background: #16181d; border: 1px solid #303642; border-radius: 4px;">
+        <div style="font-size: 0.84rem; color: #9ba3af;">
+          Click an episode above to decrypt stream URLs.
+        </div>
+        <div style="margin-top: 10px; display: flex; gap: 8px;">
+          <a href="https://www.animesaturn.net/anime/${slug}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="padding: 5px 12px; font-size: 0.8rem;">
+            Open on AnimeSaturn
+          </a>
+        </div>
+      </div>
+    </div>
+  `;
+
+  attachEpisodeClickHandlers(container, slug, base);
+}
+
+function attachEpisodeClickHandlers(container, slug, base) {
   container.querySelectorAll(".ep-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
+    btn.addEventListener("click", async () => {
       container.querySelectorAll(".ep-btn").forEach(b => b.style.backgroundColor = "#252a35");
       btn.style.backgroundColor = "var(--primary)";
+      const epNum = btn.dataset.ep;
       const infoBox = document.getElementById("modal-stream-info");
-      if (infoBox) {
-        infoBox.innerHTML = `
-          <div style="font-size: 0.82rem; color: #9ba3af;">
-            Selected: <strong style="color: #fff;">Episodio ${btn.dataset.ep}</strong> | Server: <strong style="color: #fff;">SaturnStream</strong>
-          </div>
-          <div style="margin-top: 8px; display: flex; gap: 8px;">
-            <a href="${data.url}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="padding: 5px 12px; font-size: 0.8rem;">
-              Watch Episode ${btn.dataset.ep} on AnimeSaturn
-            </a>
-          </div>
-        `;
-      }
+      if (!infoBox) return;
+
+      infoBox.innerHTML = `
+        <div style="font-size: 0.82rem; color: #9ba3af; display: flex; align-items: center; gap: 8px;">
+          <div class="spinner show" style="width: 10px; height: 10px;"></div>
+          <span>Decrypting direct stream for Episode ${epNum} from <code>${escapeHtml(base)}</code>...</span>
+        </div>
+      `;
+
+      try {
+        const streamRes = await fetch(`${base}/api/stream/${encodeURIComponent(slug)}/${epNum}`, {
+          headers: { "Accept": "application/json" }
+        });
+
+        if (streamRes.ok) {
+          const streamData = await streamRes.json();
+          const streams = streamData.streams || [];
+          const best = streams.find(s => s.stream_url) || streams[0];
+
+          if (best && best.stream_url) {
+            infoBox.innerHTML = `
+              <div style="font-size: 0.82rem; color: #9ba3af; margin-bottom: 6px;">
+                Episodio <strong>${epNum}</strong> | Server: <strong style="color: #fff;">${escapeHtml(best.server_name || "SaturnStream")}</strong>
+              </div>
+              <div style="font-family: var(--font-mono); font-size: 0.76rem; color: #64b5f6; word-break: break-all; margin-bottom: 8px; background: #0f1115; padding: 6px 8px; border-radius: 3px;">
+                ${escapeHtml(best.stream_url)}
+              </div>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <a href="${best.stream_url}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="padding: 5px 12px; font-size: 0.8rem;">
+                  Play Direct Video (.mp4/.m3u8)
+                </a>
+                <a href="https://www.animesaturn.net/anime/${slug}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="padding: 5px 12px; font-size: 0.8rem;">
+                  Watch on Web
+                </a>
+              </div>
+            `;
+            return;
+          }
+        }
+      } catch {}
+
+      infoBox.innerHTML = `
+        <div style="font-size: 0.82rem; color: #9ba3af; margin-bottom: 6px;">
+          Episodio <strong>${epNum}</strong> | AnimeSaturn Web Fallback
+        </div>
+        <div style="font-size: 0.78rem; color: #e57373; margin-bottom: 8px;">
+          Could not decrypt live stream directly (machine offline or waking up).
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <a href="https://www.animesaturn.net/anime/${slug}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="padding: 5px 12px; font-size: 0.8rem;">
+            Watch Episode ${epNum} on AnimeSaturn
+          </a>
+        </div>
+      `;
     });
   });
 }

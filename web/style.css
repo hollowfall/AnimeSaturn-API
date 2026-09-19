@@ -387,6 +387,32 @@ body {
   overflow: hidden;
 }
 
+.console-server-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  background-color: #14171d;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+
+.console-select {
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-main);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  padding: 4px 8px;
+  outline: none;
+}
+
+.console-select:focus {
+  border-color: var(--primary);
+}
+
 .console-url-bar {
   display: flex;
   align-items: center;

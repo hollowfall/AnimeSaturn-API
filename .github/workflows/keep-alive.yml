@@ -1,0 +1,23 @@
+name: Keep Render Machine Alive
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Render Backend Service
+        env:
+          RENDER_SERVICE_URL: ${{ secrets.RENDER_SERVICE_URL || 'https://animesaturn-api.onrender.com' }}
+        run: |
+          echo "Pinging ${RENDER_SERVICE_URL}/api/health..."
+          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" --connect-timeout 20 --max-time 60 "${RENDER_SERVICE_URL}/api/health" || echo "000")
+          echo "Response code: ${HTTP_STATUS}"
+          if [ "$HTTP_STATUS" -ge 200 ] && [ "$HTTP_STATUS" -lt 400 ]; then
+            echo "Render service is awake and healthy."
+          else
+            echo "Render service responded with ${HTTP_STATUS} (may be waking up)."
+          fi
