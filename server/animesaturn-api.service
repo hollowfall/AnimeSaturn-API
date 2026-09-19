@@ -1,0 +1,16 @@
+[Unit]
+Description=AnimeSaturn Live Machine API Service
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/AnimeSaturn-API
+ExecStart=/opt/AnimeSaturn-API/venv/bin/uvicorn server.app:app --host 0.0.0.0 --port 8000
+Restart=always
+RestartSec=3
+Environment=PORT=8000
+Environment=RATE_LIMIT_PER_MINUTE=60
+
+[Install]
+WantedBy=multi-user.target

@@ -1,9 +1,0 @@
-services:
-  animesaturn-api:
-    build: .
-    container_name: animesaturn-api
-    restart: always
-    ports:
-      - "8000:8000"
-    environment:
-      - PORT=8000

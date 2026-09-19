@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AnimeSaturn API - Python Library & Anime API Explorer</title>
+  <meta name="description" content="Unofficial high-performance Python library and API explorer for AnimeSaturn and its official mirrors.">
+  <link rel="icon" type="image/png" href="static/img/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=2">
+</head>
+<body>
+  
+  <header class="site-header">
+    <div class="container nav-container">
+      <a href="#" class="brand-link">
+        <img src="static/img/logo.png" alt="AnimeSaturn Logo" class="brand-icon">
+        <span class="brand-text">AnimeSaturn API</span>
+      </a>
+
+      <nav class="main-nav">
+        <a href="#playground" class="nav-item">API Playground</a>
+        <a href="#explorer" class="nav-item">Anime Explorer</a>
+        <a href="#features" class="nav-item">Features</a>
+        <a href="https://github.com/hollowfall/AnimeSaturn-API" target="_blank" rel="noopener noreferrer" class="nav-item">GitHub</a>
+        <a href="https://pypi.org/project/animesaturn/" target="_blank" rel="noopener noreferrer" class="nav-item">PyPI</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="docs/" class="btn btn-primary" id="nav-docs-btn">
+          <span>Documentation</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero-section">
+    <div class="container hero-container">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        <span>Version 1.0.3 Live on PyPI</span>
+      </div>
+
+      <h1 class="hero-title">
+        High-Performance Python Library for AnimeSaturn
+      </h1>
+
+      <p class="hero-subtitle">
+        Search thousands of anime, extract complete metadata with full Italian synopses, decrypt SaturnCDN video streams, and download high-definition episodes concurrently.
+      </p>
+
+      <div class="hero-cta-group">
+        <a href="docs/" class="btn btn-primary btn-large">
+          <span>Read Documentation</span>
+        </a>
+        <a href="#playground" class="btn btn-secondary btn-large">
+          <span>API Playground</span>
+        </a>
+      </div>
+
+      <div class="install-card">
+        <span class="terminal-prompt">$</span>
+        <code class="install-code" id="install-command">pip install animesaturn</code>
+        <button class="btn-copy" id="btn-copy-install" title="Copy to clipboard" aria-label="Copy install command">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+          <span class="copy-tooltip" id="copy-tooltip">Copied!</span>
+        </button>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-num">100%</div>
+          <div class="stat-label">Pure Python</div>
+          <div class="stat-desc">Zero headless browser overhead</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">HLS</div>
+          <div class="stat-label">Multi-Threaded</div>
+          <div class="stat-desc">Concurrent segment downloader</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">Auto</div>
+          <div class="stat-label">Domain Discovery</div>
+          <div class="stat-desc">Live mirror resolution</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">CLI</div>
+          <div class="stat-label">Terminal Utility</div>
+          <div class="stat-desc">Search, view and download</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="playground">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Live API Playground</h2>
+        <p class="section-desc">
+          Test AnimeSaturn API endpoints directly in your browser. Inspect real-time JSON responses and generate corresponding Python code snippets.
+        </p>
+      </div>
+
+      <div class="preset-pills" id="preset-container">
+        <span class="preset-label">Endpoints:</span>
+        <button class="preset-btn active" data-query="Solo Leveling" data-type="search">Search: Solo Leveling</button>
+        <button class="preset-btn" data-query="Naruto" data-type="search">Search: Naruto</button>
+        <button class="preset-btn" data-query="Bleach" data-type="search">Search: Bleach</button>
+        <button class="preset-btn" data-query="One Piece" data-type="search">Search: One Piece</button>
+        <button class="preset-btn" data-type="latest">Latest Releases</button>
+        <button class="preset-btn" data-type="mirrors">Official Mirrors</button>
+      </div>
+
+      <div class="api-console-box">
+        <div class="console-server-bar">
+          <span class="server-label">API Machine:</span>
+          <select id="api-server-select" class="console-select">
+            <option value="custom" selected>VPS / Custom Machine</option>
+            <option value="https://api.lawliet.lol">VPS Domain (https://api.lawliet.lol)</option>
+            <option value="https://animesaturn-api.onrender.com">Render Service (https://animesaturn-api.onrender.com)</option>
+            <option value="http://localhost:8000">Local Machine (http://localhost:8000)</option>
+          </select>
+        </div>
+        <div class="console-url-bar">
+          <span class="method-badge">GET</span>
+          <input type="text" id="api-url-input" class="console-input" value="https://api.lawliet.lol/api/search?q=Solo+Leveling" spellcheck="false">
+          <button id="btn-run-query" class="btn btn-primary">
+            <span class="btn-run-text">Run Query</span>
+            <div class="spinner" id="query-spinner"></div>
+          </button>
+        </div>
+
+        <div class="console-body">
+          <div class="console-tab-header">
+            <div class="tab-buttons">
+              <button class="tab-btn active" id="tab-btn-json">JSON Response</button>
+              <button class="tab-btn" id="tab-btn-code">Python Code</button>
+            </div>
+            <div class="console-meta">
+              <span class="status-indicator status-ok" id="status-badge">200 OK</span>
+              <span class="response-time" id="response-time-badge">24ms</span>
+              <button class="btn-copy-code" id="btn-copy-output" title="Copy output">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                <span>Copy</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="console-viewport">
+            <pre class="code-view active" id="json-view"><code id="json-code-content"></code></pre>
+            <pre class="code-view" id="code-view"><code id="python-code-content"></code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="explorer">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Anime Explorer</h2>
+        <p class="section-desc">
+          Browse popular titles, inspect episodes, and view direct video streams from AnimeSaturn.
+        </p>
+      </div>
+
+      <div class="explorer-controls">
+        <div class="search-input-wrapper">
+          <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="text" id="explorer-search-input" class="search-input" placeholder="Filter anime catalog (e.g. Solo Leveling, Bleach)...">
+        </div>
+        <div class="category-filters">
+          <button class="filter-pill active" data-filter="all">All</button>
+          <button class="filter-pill" data-filter="TV">TV Series</button>
+        </div>
+      </div>
+
+      <div class="anime-grid" id="anime-cards-grid">
+        
+        <div class="anime-card" data-slug="solo-leveling-2-arise-from-the-shadow-jyfLb" data-title="Solo Leveling 2: Arise from the Shadow">
+          <div class="card-poster-wrapper">
+            <img class="card-poster" src="https://img.saturncdn.net/static/images/locandine/2J1Jh.jpg" alt="Solo Leveling 2" loading="lazy">
+            <span class="card-badge-ep">13 Eps</span>
+            <span class="card-badge-type">TV</span>
+          </div>
+          <div class="card-info">
+            <h3 class="card-title">Solo Leveling 2: Arise from the Shadow</h3>
+            <div class="card-genres">Avventura, Azione, Fantasy</div>
+            <div class="card-meta">
+              <span>2025</span>
+              <span class="card-inspect-link">Inspect</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="anime-card" data-slug="naruto-shippuden-ita-PjvU1" data-title="Naruto Shippuden (ITA)">
+          <div class="card-poster-wrapper">
+            <img class="card-poster" src="https://img.saturncdn.net/static/images/locandine/01ec367b44f0a568430a957e042639af.png" alt="Naruto Shippuden" loading="lazy">
+            <span class="card-badge-ep">500 Eps</span>
+            <span class="card-badge-type">TV</span>
+          </div>
+          <div class="card-info">
+            <h3 class="card-title">Naruto Shippuden (ITA)</h3>
+            <div class="card-genres">Arti Marziali, Avventura, Azione</div>
+            <div class="card-meta">
+              <span>2007</span>
+              <span class="card-inspect-link">Inspect</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="anime-card" data-slug="bleach-c13Hk" data-title="Bleach">
+          <div class="card-poster-wrapper">
+            <img class="card-poster" src="https://img.saturncdn.net/static/images/locandine/40451l.jpg" alt="Bleach" loading="lazy">
+            <span class="card-badge-ep">366 Eps</span>
+            <span class="card-badge-type">TV</span>
+          </div>
+          <div class="card-info">
+            <h3 class="card-title">Bleach</h3>
+            <div class="card-genres">Avventura, Azione, Commedia</div>
+            <div class="card-meta">
+              <span>2004</span>
+              <span class="card-inspect-link">Inspect</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="anime-card" data-slug="one-piece-PmTvj" data-title="One Piece">
+          <div class="card-poster-wrapper">
+            <img class="card-poster" src="https://img.saturncdn.net/static/images/locandine/OnePieceElbafPic.png" alt="One Piece" loading="lazy">
+            <span class="card-badge-ep">1000+ Eps</span>
+            <span class="card-badge-type">TV</span>
+          </div>
+          <div class="card-info">
+            <h3 class="card-title">One Piece</h3>
+            <div class="card-genres">Avventura, Azione, Commedia</div>
+            <div class="card-meta">
+              <span>1999</span>
+              <span class="card-inspect-link">Inspect</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="anime-card" data-slug="jujutsu-kaisen-XMtDv" data-title="Jujutsu Kaisen">
+          <div class="card-poster-wrapper">
+            <img class="card-poster" src="https://img.saturncdn.net/static/images/locandine/db1bbeb5de1267aac5b5a0291ecb1b3a1610752065_full.jpg" alt="Jujutsu Kaisen" loading="lazy">
+            <span class="card-badge-ep">24 Eps</span>
+            <span class="card-badge-type">TV</span>
+          </div>
+          <div class="card-info">
+            <h3 class="card-title">Jujutsu Kaisen</h3>
+            <div class="card-genres">Azione, Demoni, Fantasy</div>
+            <div class="card-meta">
+              <span>2020</span>
+              <span class="card-inspect-link">Inspect</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="anime-card" data-slug="demon-slayer-kimetsu-no-yaiba-entertainment-district-arc-KGZWL" data-title="Demon Slayer">
+          <div class="card-poster-wrapper">
+            <img class="card-poster" src="https://img.saturncdn.net/static/images/locandine/YIoa-.png" alt="Demon Slayer" loading="lazy">
+            <span class="card-badge-ep">11 Eps</span>
+            <span class="card-badge-type">TV</span>
+          </div>
+          <div class="card-info">
+            <h3 class="card-title">Demon Slayer</h3>
+            <div class="card-genres">Azione, Demoni, Shounen</div>
+            <div class="card-meta">
+              <span>2022</span>
+              <span class="card-inspect-link">Inspect</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="modal-backdrop" id="modal-backdrop" aria-hidden="true">
+    <div class="modal-card" id="anime-modal" role="dialog" aria-modal="true">
+      <button class="btn-modal-close" id="btn-modal-close" aria-label="Close modal">&times;</button>
+      <div class="modal-content-grid" id="modal-content-container"></div>
+    </div>
+  </div>
+
+  <section class="section" id="features">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Features</h2>
+        <p class="section-desc">
+          Designed for performance, developer ergonomics, and reliability without browser emulation.
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <h3 class="feature-heading">Pure Python Stream Decryptor</h3>
+          <p class="feature-text">
+            Natively reverses SaturnCDN's player playlists and tokenized stream locations in pure Python without launching Chrome or Node processes.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <h3 class="feature-heading">Concurrent HLS Downloader</h3>
+          <p class="feature-text">
+            Fetches fragmented .ts video chunks across multiple worker threads, automatically selects highest bitrate variants, and stitches valid, playable media files.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <h3 class="feature-heading">Dynamic Multi-Domain Failover</h3>
+          <p class="feature-text">
+            Connects to official mirror lists to auto-discover active domains and select the fastest server, shielding your integration from DNS blocks and ISP filters.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <h3 class="feature-heading">Pythonic Interface &amp; CLI</h3>
+          <p class="feature-text">
+            Natural indexing like <code>anime[1]</code>, rich objects (Anime, Episodio, Server), and full terminal command-line tool with clean cancellation.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-callout-section">
+    <div class="container">
+      <div class="callout-card">
+        <div class="callout-content">
+          <h2 class="callout-title">Ready to start?</h2>
+          <p class="callout-text">
+            Read the comprehensive guides on batch downloading, custom progress hooks, multi-domain failover, and the complete API reference.
+          </p>
+        </div>
+        <div class="callout-action">
+          <a href="docs/" class="btn btn-primary btn-large">
+            <span>Read Full Documentation</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container footer-container">
+      <div class="footer-col brand-col">
+        <div class="brand-link">
+          <img src="static/img/logo.png" alt="AnimeSaturn API" class="brand-icon">
+          <span class="brand-text">AnimeSaturn API</span>
+        </div>
+        <p class="footer-desc">
+          Unofficial Python library and developer tooling for AnimeSaturn and its official mirrors.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-heading">Documentation</h4>
+        <ul class="footer-links">
+          <li><a href="docs/">Introduction</a></li>
+          <li><a href="docs/usage/quickstart/">QuickStart</a></li>
+          <li><a href="docs/usage/advanced/">Advanced Usage</a></li>
+          <li><a href="docs/api-reference/developer-interface/">API Reference</a></li>
+          <li><a href="docs/api-reference/exceptions/">Exceptions</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-heading">Community &amp; Source</h4>
+        <ul class="footer-links">
+          <li><a href="https://github.com/hollowfall/AnimeSaturn-API" target="_blank" rel="noopener noreferrer">GitHub Repository</a></li>
+          <li><a href="https://pypi.org/project/animesaturn/" target="_blank" rel="noopener noreferrer">PyPI Package (1.0.3)</a></li>
+          <li><a href="https://github.com/hollowfall/AnimeSaturn-API/blob/Main/LICENSE" target="_blank" rel="noopener noreferrer">MIT License</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        <p>&copy; 2026 AnimeSaturn Contributors. Unofficial community library.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js?v=2"></script>
+</body>
+</html>
