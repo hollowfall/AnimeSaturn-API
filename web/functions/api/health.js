@@ -1,4 +1,3 @@
-// GET /api/health
 export async function onRequestGet() {
   return Response.json({
     ok: true,

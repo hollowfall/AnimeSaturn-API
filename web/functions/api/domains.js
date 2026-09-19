@@ -1,4 +1,3 @@
-// GET /api/domains
 const OFFICIAL_DOMAINS = [
   "https://www.animesaturn.net",
   "https://www.animesaturn.cx",

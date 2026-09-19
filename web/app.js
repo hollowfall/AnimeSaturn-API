@@ -1,8 +1,3 @@
-/**
- * AnimeSaturn API Explorer - Simple & Clean Material Frontend
- */
-
-// Embedded real AnimeSaturn data for instant zero-latency responses
 const API_DATA = {
   "search_solo_leveling": {
     "ok": true,
@@ -332,7 +327,7 @@ function initPlayground() {
     let isLive = false;
 
     try {
-      // 1. First attempt real network fetch to see if edge function / backend is reachable
+      
       const res = await fetch(rawUrl, { headers: { "Accept": "application/json" } });
       const contentType = res.headers.get("content-type") || "";
       if (res.ok && contentType.includes("json")) {
@@ -340,10 +335,9 @@ function initPlayground() {
         isLive = true;
       }
     } catch (e) {
-      // Network failed or 404 HTML fallback
+      
     }
 
-    // 2. If endpoint wasn't reached, resolve real AnimeSaturn dataset seamlessly
     if (!resolvedData) {
       if (rawUrl.includes("Naruto")) {
         resolvedData = API_DATA.search_naruto;
@@ -391,7 +385,6 @@ function initPlayground() {
     });
   }
 
-  // Initial execution on page load
   runQuery();
 }
 
@@ -449,7 +442,6 @@ function initExplorerFilter() {
     });
   }
 
-  // Attach card clicks to modal
   cards.forEach(card => {
     card.addEventListener("click", () => {
       openAnimeModal(card.dataset.slug, card.dataset.title);

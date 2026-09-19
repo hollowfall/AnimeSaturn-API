@@ -1,8 +1,6 @@
-// CORS Middleware for Cloudflare Pages Functions
 export async function onRequest(context) {
   const { request, next } = context;
 
-  // Handle CORS pre-flight
   if (request.method === "OPTIONS") {
     return new Response(null, {
       status: 204,

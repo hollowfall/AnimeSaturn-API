@@ -1,4 +1,3 @@
-// GET /api/anime/[slug]
 const BASE_DOMAIN = "https://www.animesaturn.net";
 const USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36";
 
@@ -8,7 +7,7 @@ export async function onRequestGet(context) {
     return Response.json({ ok: false, error: "Missing anime slug" }, { status: 400 });
   }
 
-  const cleanSlug = slug.replace(/^anime\//, "").replace(/\/$/, "");
+  const cleanSlug = slug.replace(/^anime\
   const targetUrl = `${BASE_DOMAIN}/anime/${cleanSlug}`;
 
   try {
@@ -29,21 +28,17 @@ export async function onRequestGet(context) {
 
     const html = await res.text();
 
-    // 1. Extract Title
     const titleMatch = html.match(/<b[^>]*class="[^"]*box-anime-title[^"]*"[^>]*>([\s\S]*?)<\/b>/i) ||
                        html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
     const title = titleMatch ? titleMatch[1].replace(/<[^>]+>/g, "").trim() : cleanSlug;
 
-    // 2. Extract Locandina / Poster
     const posterMatch = html.match(/<img[^>]*class="[^"]*img-fluid[^"]*"[^>]*src="([^"]+)"/i);
     const poster = posterMatch ? posterMatch[1] : "";
 
-    // 3. Extract Plot / Story
     const storyMatch = html.match(/id="trama-anime"[^>]*>([\s\S]*?)<\/div>/i) ||
                        html.match(/<div[^>]*class="[^"]*card-body[^"]*"[^>]*>([\s\S]*?)<\/div>/i);
     const story = storyMatch ? storyMatch[1].replace(/<[^>]+>/g, "").trim() : "";
 
-    // 4. Extract Episodes
     const episodes = [];
     const epRegex = /href="(\/ep\/[^"]+|\/anime\/[^"]+\/ep-[^"]+)"[^>]*>([\s\S]*?)<\/a>/g;
     let match;

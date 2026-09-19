@@ -1,4 +1,3 @@
-// GET /api/episode/[slug]/[number]
 const BASE_DOMAIN = "https://www.animesaturn.net";
 const USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36";
 
@@ -11,7 +10,7 @@ export async function onRequestGet(context) {
     );
   }
 
-  const cleanSlug = slug.replace(/^anime\//, "").replace(/\/$/, "");
+  const cleanSlug = slug.replace(/^anime\
   const cleanNum = number.replace(/^ep-?/i, "");
 
   const watchUrl = `${BASE_DOMAIN}/api/watch/${cleanSlug}/ep-${cleanNum}`;
