@@ -45,14 +45,14 @@ function copyToClipboard(text, btnElement) {
 
 function getSelectedBaseServer() {
   const select = document.getElementById("api-server-select");
-  if (!select) return "https://animesaturn-api.onrender.com";
+  if (!select) return "https://api.lawliet.lol";
   if (select.value === "custom") {
     const currentVal = document.getElementById("api-url-input")?.value || "";
     try {
       const parsed = new URL(currentVal);
       return parsed.origin;
     } catch {
-      return "https://animesaturn-api.onrender.com";
+      return "https://api.lawliet.lol";
     }
   }
   return select.value;
