@@ -17,11 +17,11 @@
 
 </div>
 
-**AnimeSaturn-API** è una libreria Python non ufficiale, moderna e ad alte prestazioni per cercare anime, estrarre metadati e scaricare episodi da [AnimeSaturn](https://www.animesaturn.net) e da tutti i suoi domini e mirror ufficiali.
+**AnimeSaturn-API** e una libreria Python non ufficiale, moderna e ad alte prestazioni per cercare anime, estrarre metadati e scaricare episodi da [AnimeSaturn](https://www.animesaturn.net) e da tutti i suoi domini e mirror ufficiali.
 
-Progettata con la stessa filosofia e semplicità d'uso di [AnimeWorld-API](https://github.com/MainKronos/AnimeWorld-API).
+Progettata con la stessa filosofia e semplicita d'uso di [AnimeWorld-API](https://github.com/MainKronos/AnimeWorld-API).
 
-Lingue:
+Lingue disponibili:
 - [English](README.md)
 - [Italiano](README.it.md)
 
@@ -29,22 +29,26 @@ Lingue:
 
 ## Caratteristiche
 
-- 🔍 **Ricerca Istantanea**: Accesso diretto all'endpoint JSON interno di AnimeSaturn.
-- 🌐 **Supporto Multi-Dominio**: Rilevamento automatico dei mirror ufficiali attivi tramite `https://www.animesaturn.me/` (`animesaturn.net`, `animesaturn.tv`, `animesaturn.in`, ecc.).
-- 📑 **Metadati Completi**: Titolo, titolo alternativo/romaji, trama completa in italiano, generi, stagione, lingua, voto, link MyAnimeList/AniList e locandina.
-- 🔓 **Decrittazione Video SaturnCDN**: Algoritmo nativo in Python puro per estrarre lo stream `.mp4` diretto senza browser headless (Selenium/Playwright).
-- 📥 **Scaricatore Integrato**: Download a blocchi ad alta velocità con supporto resume, barra di avanzamento (`tqdm`) e hook personalizzabili.
-- ⌨️ **Interfaccia CLI**: Comando da terminale `animesaturn` per cercare, ispezionare e scaricare direttamente da riga di comando.
+- **Ricerca Istantanea**: Query diretta attraverso l'endpoint JSON interno di AnimeSaturn con fallback automatico ai filtri HTML.
+- **Risoluzione Smart dello Slug**: Cerca anime sia tramite slug con hash (`solo-leveling-6iHEN`), titolo semplice (`solo-leveling`), sia con link completo.
+- **Supporto Multi-Dominio**: Rilevamento e risoluzione automatica dei mirror ufficiali attivi tramite `https://www.animesaturn.me/` (`animesaturn.net`, `animesaturn.tv`, `animesaturn.in`, ecc.).
+- **Metadati Completi**: Titolo, titolo alternativo/romaji, trama in italiano, generi, stagione di uscita, anno, studio, lingua, voto, link MyAnimeList/AniList e locandine ad alta risoluzione.
+- **Decrittazione Video SaturnCDN**: Algoritmo nativo in Python puro per estrarre lo stream video senza necessita di browser headless (Selenium/Playwright) o Node.js.
+- **Scaricatore HLS Concorrente**: Motore multi-thread per il download di playlist `.m3u8` e segmenti video `.ts` con selezione automatica della massima risoluzione disponibile e retry automatici.
+- **Interruzione Pulita**: Gestione sicura di `Ctrl+C` o hook di interruzione senza tracebacks o file temporanei orfani.
+- **Interfaccia CLI Completa**: Strumento da terminale `animesaturn` per cercare, visualizzare dettagli di anime ed episodi e scaricare file video.
 
 ---
 
 ## Installazione
 
+Installa la release stabile da PyPI:
+
 ```bash
 pip install animesaturn
 ```
 
-Per installare anche le dipendenze per la documentazione MkDocs:
+Per installare anche le dipendenze per la compilazione della documentazione MkDocs:
 
 ```bash
 pip install "animesaturn[docs]"
@@ -57,117 +61,130 @@ pip install "animesaturn[docs]"
 ### Ricerca Anime
 
 ```python
-import animesaturn as asaturn
+import animesaturn
 
-# Ricerca anime per parola chiave
-risultati = asaturn.find("One Piece")
+# Ricerca titoli per parola chiave
+risultati = animesaturn.find("One Piece")
 for item in risultati[:5]:
-    print(f"{item['name']} ({item['year']}) -> {item['link']}")
+    print(f"{item['name']} ({item['year']}) -> {item['url']}")
 ```
 
 ### Dettagli e Metadati Anime
 
 ```python
-import animesaturn as asaturn
+import animesaturn
 
-# Inizializza l'anime tramite link o slug
-anime = asaturn.Anime("one-piece-PmTvj")
+# Inizializza l'anime tramite slug, titolo o URL
+anime = animesaturn.Anime("solo-leveling")
 
 print(f"Titolo:      {anime.name}")
 print(f"Titolo Alt:  {anime.jtitle}")
-print(f"Tipo:        {anime.category}")
+print(f"Categoria:   {anime.category}")
+print(f"Studio:      {anime.studio}")
 print(f"Stagione:    {anime.season} ({anime.release})")
 print(f"Stato:       {anime.status}")
 print(f"Voto:        {anime.rating}/10")
 print(f"Generi:      {', '.join(anime.genres)}")
-print(f"Trama:       {anime.story}")
+print(f"Episodi:     {anime.episodes_num}")
+print(f"Locandina:   {anime.poster}")
+print(f"MyAnimeList: {anime.mal_url}")
 ```
 
-### Lista Episodi e Link Streaming Diretto
+### Accesso agli Episodi ed Estrazione Stream
 
 ```python
-# Ottieni gli episodi rilasciati
-episodi = anime.getEpisodes()
-print(f"Totale episodi: {len(episodi)}")
+# Accesso diretto per indice o metodo
+primo_ep = anime[1]  # oppure anime.get_episode(1)
 
-primo_ep = episodi[0]
-print(f"Episodio: {primo_ep.number}")
+print(f"Episodio:  {primo_ep.number} - {primo_ep.title}")
+print(f"Watch URL: {primo_ep.url}")
 
-# Ottieni i server disponibili
-server_list = primo_ep.getServer()
-server = server_list[0] # Server principale
+# Ottieni i server di streaming disponibili
+server_list = primo_ep.servers
+server = server_list[0]  # Server principale (SaturnStream)
 
-# Ottieni il link diretto al video .mp4
-link_video = server.fileLink()
-print(f"URL video: {link_video}")
-
-# Informazioni sul file
-info = server.fileInfo()
-print(f"Dimensione: {info['total_bytes'] / (1024*1024):.2f} MB")
+print(f"Server:     {server.name}")
+print(f"Player:     {server.link}")
+print(f"Stream URL: {server.fileLink()}")
 ```
 
-### Download Episodio
+### Download degli Episodi
 
 ```python
-# Download con barra di progresso nel terminale
-primo_ep.download(folder="./download")
+# Download con barra di avanzamento
+primo_ep.download(folder="./downloads")
 
-# Download con hook di callback personalizzato
-def progresso(corrente, totale, percentuale):
-    print(f"Progresso: {percentuale:.1f}% ({corrente}/{totale} byte)", end="\r")
-    return True # Ritorna False per interrompere
+# Callback personalizzato di avanzamento
+def on_progress(current_bytes, total_bytes, percentage):
+    print(f"Avanzamento: {percentage:.1f}% ({current_bytes}/{total_bytes} bytes)", end="\r")
+    return True  # Restituisci False per interrompere pulitamente
 
-primo_ep.download(folder="./download", hook=progresso)
+primo_ep.download(folder="./downloads", hook=on_progress)
 ```
 
 ---
 
-## Gestione Domini e Mirror
+## Gestione Multi-Dominio
 
 ```python
-import animesaturn as asaturn
+import animesaturn
 
-# Dominio attualmente attivo
-print("Dominio attivo:", asaturn.get_domain())
+# Mostra il dominio attualmente attivo
+print("Dominio attivo:", animesaturn.get_domain())
 
-# Recupera la lista dei domini ufficiali da animesaturn.me
-domini = asaturn.fetch_official_domains()
-print("Mirror ufficiali:", domini)
+# Recupera tutti i mirror ufficiali registrati
+mirrors = animesaturn.fetch_official_domains()
+print("Mirror ufficiali:", mirrors)
 
-# Trova e imposta automaticamente il dominio più veloce
-dominio_veloce = asaturn.discover_active_domain()
-print("Dominio attivo impostato su:", dominio_veloce)
+# Testa e seleziona il mirror piu veloce
+active = animesaturn.discover_active_domain()
+print("Mirror piu veloce impostato su:", active)
 
-# Imposta manualmente un dominio specifico
-asaturn.set_domain("https://www.animesaturn.tv")
+# Oppure imposta manualmente un dominio custom
+animesaturn.set_domain("https://www.animesaturn.tv")
 ```
 
 ---
 
-## Utilizzo da CLI
+## Interfaccia a Riga di Comando (CLI)
+
+Il pacchetto fornisce il comando da terminale `animesaturn` (eseguibile anche come `python animesaturn`):
+
+| Comando | Descrizione | Esempio |
+| :--- | :--- | :--- |
+| `search` | Cerca anime per parola chiave | `animesaturn search "Naruto"` |
+| `info` | Mostra dettagli anime e lista episodi | `animesaturn info "solo-leveling"` |
+| `episode` / `ep` | Mostra dettagli episodio e link stream | `animesaturn ep "solo-leveling" 1` |
+| `download` | Scarica episodio con barra di progresso | `animesaturn download "solo-leveling" -e 1 -o ./downloads` |
+| `latest` | Mostra gli ultimi episodi rilasciati | `animesaturn latest --page 1` |
+| `domains` | Mostra e testa i mirror ufficiali | `animesaturn domains` |
+
+### Esempi CLI
 
 ```bash
-# Cerca un anime
-animesaturn search "Naruto"
+# Cerca anime
+animesaturn search "Bleach"
 
-# Mostra informazioni sull'anime
-animesaturn info "naruto-shippuden-ita-PjvU1"
+# Ispeziona i metadati di un anime
+animesaturn info "bleach-sennen-kessen-hen-52Qxu"
 
-# Mostra gli ultimi episodi usciti
-animesaturn latest --page 1
+# Mostra i link di streaming per l'episodio 1
+animesaturn ep "solo-leveling" 1
 
 # Scarica l'episodio 1
-animesaturn download "naruto-shippuden-ita-PjvU1" --ep 1 --folder ./download
+animesaturn download "solo-leveling" -e 1 -s 0 -o ./downloads
 
-# Mostra i domini ufficiali
-animesaturn domains
+# Elenco ultime uscite
+animesaturn latest -p 1
 ```
 
 ---
 
 ## Documentazione
 
-La documentazione completa è consultabile su [https://animesaturn.lawliet.lol/](https://animesaturn.lawliet.lol/) oppure localmente avviando:
+La documentazione completa e consultabile all'indirizzo [https://animesaturn.lawliet.lol/](https://animesaturn.lawliet.lol/).
+
+Per visualizzare la documentazione in locale:
 
 ```bash
 mkdocs serve
@@ -175,9 +192,13 @@ mkdocs serve
 
 ---
 
+## Disclaimer
+
+Questo progetto non e ufficiale ed e sviluppato dalla community. Non e in alcun modo affiliato, sponsorizzato o collegato ad AnimeSaturn.
+
 ## Licenza
 
-Distribuito sotto licenza [MIT](LICENSE).
+Rilasciato sotto licenza [MIT](LICENSE).
 
 ---
 
@@ -188,4 +209,3 @@ Distribuito sotto licenza [MIT](LICENSE).
 [![Star History Chart](https://api.star-history.com/svg?repos=hollowfall/animesaturn-api&type=Date&legend=bottom-right)](https://star-history.com/#hollowfall/animesaturn-api&Date)
 
 </div>
-
