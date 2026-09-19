@@ -1,14 +1,14 @@
 """
 Module containing the Anime class representing an entire anime series or movie.
 """
-from typing import List, Optional, Dict, Any
+from typing import List, Optional, Dict, Any, Union, Iterator
 import re
 import json
 from bs4 import BeautifulSoup
 import httpx
 
 from .utility import SES, HealthCheck
-from .exceptions import Error404, AnimeNotAvailable
+from .exceptions import Error404, AnimeNotAvailable, EpisodeNotFound
 from .episodio import Episodio
 
 
@@ -102,6 +102,13 @@ class Anime:
 
         self._episodes_cache: Optional[List[Episodio]] = None
         self._load_page()
+
+    @property
+    def url(self) -> str:
+        """Full absolute URL to the anime page."""
+        base = get_domain()
+        return f"{base}{self.link}"
+
 
     def _load_page(self) -> None:
         """Fetch HTML and parse anime details with automatic slug/title resolution fallback."""
@@ -334,5 +341,39 @@ class Anime:
         """Convenience property returning all episodes."""
         return self.getEpisodes()
 
+    def get_episode(self, number: Union[int, str]) -> Episodio:
+        """
+        Get a specific episode by its episode number.
+
+        Args:
+            number: Episode number as an integer or string (e.g. 1, '1', '7-5').
+
+        Returns:
+            Episodio object.
+
+        Raises:
+            EpisodeNotFound: If episode number is not found.
+        """
+        target = str(number).strip()
+        for ep in self.getEpisodes():
+            if str(ep.number).strip() == target or str(ep.clean_number).strip() == target:
+                return ep
+        raise EpisodeNotFound(f"Episode {number} not found for '{self.name or self.slug}'")
+
+    getEpisode = get_episode
+
+    def __getitem__(self, item: Union[int, str]) -> Episodio:
+        """Allow indexing anime by episode number (e.g. anime[1])."""
+        return self.get_episode(item)
+
+    def __iter__(self) -> Iterator[Episodio]:
+        """Allow iterating directly over anime episodes."""
+        return iter(self.getEpisodes())
+
+    def __len__(self) -> int:
+        """Return total number of episodes."""
+        return len(self.getEpisodes())
+
     def __repr__(self) -> str:
         return f"<Anime title='{self.name}' locandina='{self.locandina}' episodes={self.episodes_num}>"
+

@@ -57,12 +57,14 @@ def main(args: Optional[list] = None) -> int:
         for i, res in enumerate(results, 1):
             year_str = f" ({res['year']})" if res.get("year") else ""
             type_str = f" [{res['type']}]" if res.get("type") else ""
+            full_link = res.get("url") or (f"{get_domain()}{res['link']}" if res.get('link', '').startswith('/') else res.get('link', ''))
             print(f"[{i}] {res['name']}{year_str}{type_str}")
-            print(f"    Link: {res['link']}")
+            print(f"    Link: {full_link}")
             if res.get("genres"):
                 print(f"    Genres: {', '.join(res['genres'])}")
             print()
         return 0
+
 
     elif parsed.command == "info":
         print(f"\nFetching anime details for: '{parsed.link}'...")
@@ -72,6 +74,7 @@ def main(args: Optional[list] = None) -> int:
             print(f"Title:        {anime.name}")
             if anime.jtitle:
                 print(f"Alt Title:    {anime.jtitle}")
+            print(f"Link:         {anime.url}")
             print(f"Category:     {anime.category}")
             if anime.studio:
                 print(f"Studio:       {anime.studio}")
@@ -160,8 +163,10 @@ def main(args: Optional[list] = None) -> int:
         for item in items:
             ep_lbl = f"Ep. {item.get('episodeLabel', '?')}"
             type_lbl = f"[{item.get('type', 'TV')}]"
+            raw_url = item.get('url', '')
+            full_watch = f"{get_domain()}{raw_url}" if raw_url.startswith('/') else raw_url
             print(f"- {item.get('title')} {ep_lbl} {type_lbl}")
-            print(f"  Watch URL: {item.get('url')}")
+            print(f"  Watch URL: {full_watch}")
         return 0
 
     elif parsed.command == "domains":
