@@ -1,12 +1,13 @@
 <div align="center">
 
-[![AnimeSaturn](https://github.com/hollowfall/AnimeSaturn-API/blob/master/docs/static/img/banner.png)](https://hollowfall.github.io/AnimeSaturn-API/)
+[![AnimeSaturn](https://animesaturn.lawliet.lol/static/img/banner.png)](https://animesaturn.lawliet.lol/)
 
 # AnimeSaturn-API (Italiano)
 
 [![PyPI](https://img.shields.io/pypi/v/animesaturn?color=blue)](https://pypi.org/project/animesaturn/)
 [![Python](https://img.shields.io/pypi/pyversions/animesaturn)](https://pypi.org/project/animesaturn/)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/hollowfall/AnimeSaturn-API/blob/master/LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/hollowfall/AnimeSaturn-API/blob/Main/LICENSE)
+[![Deploy MkDocs](https://github.com/hollowfall/AnimeSaturn-API/actions/workflows/deploy-mkdocs.yml/badge.svg)](https://animesaturn.lawliet.lol/)
 
 </div>
 
@@ -160,7 +161,7 @@ animesaturn domains
 
 ## Documentazione
 
-La documentazione completa è consultabile su [https://mainkronos.github.io/AnimeSaturn-API/](https://mainkronos.github.io/AnimeSaturn-API/) oppure localmente avviando:
+La documentazione completa è consultabile su [https://animesaturn.lawliet.lol/](https://animesaturn.lawliet.lol/) oppure localmente avviando:
 
 ```bash
 mkdocs serve
@@ -171,3 +172,14 @@ mkdocs serve
 ## Licenza
 
 Distribuito sotto licenza [MIT](LICENSE).
+
+---
+
+## Star History
+
+<div align="center">
+
+[![Star History Chart](https://api.star-history.com/svg?repos=hollowfall/animesaturn-api&type=Date&legend=bottom-right)](https://star-history.com/#hollowfall/animesaturn-api&Date)
+
+</div>
+
