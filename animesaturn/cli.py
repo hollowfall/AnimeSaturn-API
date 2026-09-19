@@ -28,6 +28,12 @@ def _run_cli(args: Optional[list] = None) -> int:
     p_info = subparsers.add_parser("info", help="Get anime metadata and episode list")
     p_info.add_argument("link", help="Anime slug or link (e.g. 'one-piece-PmTvj')")
 
+    # Command: episode
+    p_ep = subparsers.add_parser("episode", aliases=["ep"], help="Display episode info and stream links")
+    p_ep.add_argument("link", help="Anime slug, URL, or title")
+    p_ep.add_argument("ep", nargs="?", default="1", help="Episode number (default: 1)")
+    p_ep.add_argument("-e", "--episode", dest="ep_flag", help="Episode number (optional flag)")
+
     # Command: download
     p_down = subparsers.add_parser("download", help="Download an episode")
     p_down.add_argument("link", help="Anime slug, URL, or title")
@@ -116,6 +122,38 @@ def _run_cli(args: Optional[list] = None) -> int:
             return 0
         except Exception as e:
             print(f"Error fetching anime: {e}", file=sys.stderr)
+            return 1
+
+    elif parsed.command in ("episode", "ep"):
+        ep_num = parsed.ep_flag or parsed.ep
+        print(f"\nFetching episode {ep_num} for '{parsed.link}'...")
+        try:
+            anime = Anime(parsed.link)
+            target_ep = anime.get_episode(ep_num)
+            if not target_ep:
+                print(f"Episode {ep_num} not found.", file=sys.stderr)
+                return 1
+
+            print("=" * 65)
+            print(f"Anime:       {anime.name}")
+            print(f"Episode:     {target_ep.number} ({target_ep.title})")
+            print(f"Watch URL:   {target_ep.url}")
+            print("=" * 65)
+
+            servers = target_ep.getServer()
+            print(f"\nAvailable Streaming Servers ({len(servers)} total):")
+            for i, s in enumerate(servers):
+                print(f"\n[{i}] {s.name}")
+                print(f"    Player:  {s.link}")
+                try:
+                    direct = s.fileLink()
+                    print(f"    Stream:  {direct}")
+                except Exception as ex:
+                    print(f"    Stream:  <Decryption error: {ex}>")
+            print()
+            return 0
+        except Exception as e:
+            print(f"Error fetching episode: {e}", file=sys.stderr)
             return 1
 
     elif parsed.command == "download":

@@ -7,6 +7,7 @@ import html
 import json
 
 from .utility import SES, HealthCheck, sanitize_filename
+from .domains import get_domain
 from .exceptions import EpisodeNotFound, ServerNotSupported, AnimeSaturnError
 from .servers import Server, create_server
 
@@ -56,6 +57,13 @@ class Episodio:
         self.episode_id: Optional[int] = episode_id
         self._raw_servers: Optional[List[Dict[str, Any]]] = raw_servers
         self._server_cache: Optional[List[Server]] = None
+
+    @property
+    def url(self) -> str:
+        """Full absolute URL to watch page on active AnimeSaturn domain."""
+        if self.link.startswith("http"):
+            return self.link
+        return f"{get_domain()}{self.link if self.link.startswith('/') else '/' + self.link}"
 
     def _fetch_episode_data(self) -> Dict[str, Any]:
         """
