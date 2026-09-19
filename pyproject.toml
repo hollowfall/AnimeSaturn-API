@@ -1,0 +1,68 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "animesaturn"
+version = "1.0.0"
+description = "UNOFFICIAL Python API for AnimeSaturn and its official mirrors"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [
+    { name = "AnimeSaturn Contributors" }
+]
+keywords = [
+    "anime",
+    "animesaturn",
+    "api",
+    "scraper",
+    "downloader",
+    "streaming",
+    "saturncdn",
+    "sub-ita",
+    "ita"
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    "Topic :: Multimedia :: Video",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+dependencies = [
+    "httpx>=0.24.0",
+    "beautifulsoup4>=4.11.0",
+    "tqdm>=4.65.0"
+]
+
+[project.optional-dependencies]
+docs = [
+    "mkdocs>=1.5.0",
+    "mkdocs-material>=9.4.0"
+]
+test = [
+    "pytest>=7.0.0"
+]
+
+[project.scripts]
+animesaturn = "animesaturn.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/hollowfall/AnimeSaturn-API"
+Documentation = "https://hollowfall.github.io/AnimeSaturn-API/"
+Repository = "https://github.com/hollowfall/AnimeSaturn-API"
+"Bug Tracker" = "https://github.com/hollowfall/AnimeSaturn-API/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["animesaturn*"]
+exclude = ["tests*", "docs*"]

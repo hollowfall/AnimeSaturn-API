@@ -1,0 +1,62 @@
+site_name: AnimeSaturn-API
+site_description: UNOFFICIAL high-performance Python library for AnimeSaturn and its official mirrors
+site_url: https://github.com/hollowfall/AnimeSaturn-API
+
+theme:
+  name: 'material'
+  language: en
+  palette:
+    - scheme: 'default'
+      media: '(prefers-color-scheme: light)'
+      primary: 'indigo'
+      accent: 'amber'
+      toggle:
+        icon: 'material/lightbulb'
+        name: "Switch to dark mode"
+    - scheme: 'slate'
+      media: '(prefers-color-scheme: dark)'
+      primary: 'indigo'
+      accent: 'amber'
+      toggle:
+        icon: 'material/lightbulb-outline'
+        name: 'Switch to light mode'
+  icon:
+    repo: fontawesome/brands/github
+  logo: static/img/logo.png
+  favicon: static/img/logo.png
+  features:
+    - navigation.sections
+    - navigation.tracking
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.annotate
+    - content.code.copy
+
+repo_name: hollowfall/AnimeSaturn-API
+repo_url: https://github.com/hollowfall/AnimeSaturn-API
+edit_uri: ""
+
+nav:
+  - Introduction: 'index.md'
+  - Usage:
+      - QuickStart: 'usage/quickstart.md'
+      - Advanced Usage: 'usage/advanced.md'
+  - API Reference:
+      - Developer Interface: 'api-reference/developer-interface.md'
+      - Exceptions: 'api-reference/exceptions.md'
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - tables
+  - attr_list
