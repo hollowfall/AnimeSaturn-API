@@ -58,7 +58,7 @@ animesaturn = "animesaturn.cli:main"
 
 [project.urls]
 Homepage = "https://github.com/hollowfall/AnimeSaturn-API"
-Documentation = "https://hollowfall.github.io/AnimeSaturn-API/"
+Documentation = "https://animesaturn.lawliet.lol/"
 Repository = "https://github.com/hollowfall/AnimeSaturn-API"
 "Bug Tracker" = "https://github.com/hollowfall/AnimeSaturn-API/issues"
 
