@@ -1,6 +1,6 @@
 site_name: AnimeSaturn-API
 site_description: UNOFFICIAL high-performance Python library for AnimeSaturn and its official mirrors
-site_url: https://animesaturn.lawliet.lol/
+site_url: https://animesaturn.lawliet.lol/docs/
 
 theme:
   name: 'material'
