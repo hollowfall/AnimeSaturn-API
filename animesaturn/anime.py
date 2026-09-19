@@ -10,6 +10,7 @@ import httpx
 from .utility import SES, HealthCheck
 from .exceptions import Error404, AnimeNotAvailable, EpisodeNotFound
 from .episodio import Episodio
+from .domains import get_domain
 
 
 class Anime:

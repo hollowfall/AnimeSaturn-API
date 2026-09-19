@@ -29,14 +29,14 @@ def main(args: Optional[list] = None) -> int:
 
     # Command: download
     p_down = subparsers.add_parser("download", help="Download an episode")
-    p_down.add_argument("link", help="Anime slug or link")
-    p_down.add_argument("--ep", required=True, help="Episode number to download (e.g. 1)")
-    p_down.add_argument("--folder", default=".", help="Output directory folder")
-    p_down.add_argument("--server", type=int, default=0, help="Server index (default: 0)")
+    p_down.add_argument("link", help="Anime slug, URL, or title")
+    p_down.add_argument("-e", "--ep", "--episode", dest="ep", required=True, help="Episode number to download (e.g. 1)")
+    p_down.add_argument("-o", "-f", "--folder", "--output", dest="folder", default=".", help="Output directory folder (default: .)")
+    p_down.add_argument("-s", "--server", dest="server", default="0", help="Server name or index (default: 0 or 'SaturnStream')")
 
     # Command: latest
     p_latest = subparsers.add_parser("latest", help="Show latest released episodes")
-    p_latest.add_argument("--page", type=int, default=1, help="Page number")
+    p_latest.add_argument("-p", "--page", type=int, default=1, help="Page number (default: 1)")
 
     # Command: domains
     p_domains = subparsers.add_parser("domains", help="List and check official domains")
@@ -137,7 +137,17 @@ def main(args: Optional[list] = None) -> int:
                 print("No video servers available for this episode.", file=sys.stderr)
                 return 1
 
-            chosen_server = servers[parsed.server if parsed.server < len(servers) else 0]
+            chosen_server = None
+            if str(parsed.server).isdigit():
+                idx = int(parsed.server)
+                chosen_server = servers[idx if idx < len(servers) else 0]
+            else:
+                for s in servers:
+                    if str(parsed.server).lower() in s.name.lower():
+                        chosen_server = s
+                        break
+                if not chosen_server:
+                    chosen_server = servers[0]
             print(f"Using server: '{chosen_server.name}'")
             print(f"Extracting video stream link...")
             direct_link = chosen_server.fileLink()
