@@ -104,10 +104,55 @@ class Anime:
         self._load_page()
 
     def _load_page(self) -> None:
-        """Fetch HTML and parse anime details."""
-        resp = SES.get(self.link)
-        self.html = resp.text
-        self._parse()
+        """Fetch HTML and parse anime details with automatic slug/title resolution fallback."""
+        try:
+            resp = SES.get(self.link)
+            self.html = resp.text
+            self._parse()
+        except Error404:
+            resolved_link = self._try_resolve_slug(self.slug)
+            if resolved_link and resolved_link != self.link:
+                self.link = resolved_link
+                self.slug = self.link.replace("/anime/", "").strip("/")
+                resp = SES.get(self.link)
+                self.html = resp.text
+                self._parse()
+            else:
+                raise
+
+    def _try_resolve_slug(self, query: str) -> Optional[str]:
+        """Search AnimeSaturn when an unhashed slug or anime title is provided."""
+        from .search import find
+        clean_q = query.replace("-", " ").strip()
+        if not clean_q:
+            return None
+        try:
+            results = find(clean_q)
+            if not results:
+                return None
+
+            # 1. Look for exact base slug match (e.g. 'solo-leveling' matches 'solo-leveling-6iHEN')
+            for r in results:
+                slug = r.get("link", "").replace("/anime/", "").strip("/")
+                base_slug = slug.rsplit("-", 1)[0] if "-" in slug else slug
+                if base_slug.lower() == query.lower():
+                    return r.get("link")
+
+            # 2. Look for exact title match (case-insensitive)
+            for r in results:
+                if r.get("name", "").strip().lower() == clean_q.lower():
+                    return r.get("link")
+
+            # 3. Look for partial base slug or title match
+            for r in results:
+                slug = r.get("link", "").replace("/anime/", "").strip("/")
+                if query.lower() in slug.lower() or clean_q.lower() in r.get("name", "").lower():
+                    return r.get("link")
+
+            # 4. Fallback to first search result
+            return results[0].get("link")
+        except Exception:
+            return None
 
     @HealthCheck
     def _parse(self) -> None:
