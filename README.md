@@ -1,6 +1,6 @@
 <div align="center">
 
-[![AnimeSaturn](https://github.com/hollowfall/AnimeSaturn-API/blob/master/docs/static/img/banner.png)](https://hollowfall.github.io/AnimeSaturn-API/)
+[![AnimeSaturn](https://animesaturn.lawliet.lol/static/img/banner.png)](https://hollowfall.github.io/AnimeSaturn-API/)
 
 # AnimeSaturn-API
 
