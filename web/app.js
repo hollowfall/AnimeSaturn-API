@@ -44,18 +44,13 @@ function copyToClipboard(text, btnElement) {
 }
 
 function getSelectedBaseServer() {
-  const select = document.getElementById("api-server-select");
-  if (!select) return "https://api.lawliet.lol";
-  if (select.value === "custom") {
-    const currentVal = document.getElementById("api-url-input")?.value || "";
-    try {
-      const parsed = new URL(currentVal);
-      return parsed.origin;
-    } catch {
-      return "https://api.lawliet.lol";
-    }
+  const currentVal = document.getElementById("api-url-input")?.value || "";
+  try {
+    const parsed = new URL(currentVal);
+    return parsed.origin;
+  } catch {
+    return "https://api.lawliet.lol";
   }
-  return select.value;
 }
 
 function initConsole() {
@@ -67,7 +62,6 @@ function initConsole() {
   const responseTimeBadge = document.getElementById("response-time-badge");
   const jsonCodeContent = document.getElementById("json-code-content");
   const pythonCodeContent = document.getElementById("python-code-content");
-  const serverSelect = document.getElementById("api-server-select");
 
   const tabBtnJson = document.getElementById("tab-btn-json");
   const tabBtnCode = document.getElementById("tab-btn-code");
@@ -87,22 +81,6 @@ function initConsole() {
       tabBtnJson.classList.remove("active");
       codeView.classList.add("active");
       jsonView.classList.remove("active");
-    });
-  }
-
-  if (serverSelect && urlInput) {
-    serverSelect.addEventListener("change", () => {
-      if (serverSelect.value === "custom") {
-        urlInput.focus();
-        return;
-      }
-      try {
-        const currentUrl = new URL(urlInput.value, window.location.origin);
-        urlInput.value = `${serverSelect.value}${currentUrl.pathname}${currentUrl.search}`;
-      } catch {
-        urlInput.value = `${serverSelect.value}/api/search?q=Solo+Leveling`;
-      }
-      runQuery();
     });
   }
 
@@ -170,7 +148,7 @@ function initConsole() {
         error: true,
         endpoint: rawUrl,
         message: err.message || "Failed to establish connection to the machine API.",
-        notice: "If your Render service is on the free tier, it spins down after inactivity. Sending this request initiates wakeup; retry in 30-45 seconds."
+        notice: "Ensure your API machine is running at https://api.lawliet.lol."
       };
     }
 
